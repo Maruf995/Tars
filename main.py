@@ -7,10 +7,6 @@ from gtts import gTTS
 import playsound
 from config import bye_words, hi_words
 
-# Установка политики событий для селектора Windows
-import asyncio
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
-
 # Создаем глобальные переменные
 messages = []
 response_text = ""
@@ -24,7 +20,7 @@ microphone = sr.Microphone()
 def ask_tars(messages):
     global response_text
     response = g4f.ChatCompletion.create(
-        model=g4f.models.gpt_4o,
+        model=g4f.models.gpt_35_turbo,
         messages=messages
     )
     response_text = response
