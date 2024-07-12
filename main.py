@@ -1,10 +1,11 @@
 import tkinter as tk
 import time
-import threading
+import threading 
 import g4f
 import speech_recognition as sr
 from gtts import gTTS
 import playsound
+from config import bye_words, hi_words
 
 # Установка политики событий для селектора Windows
 import asyncio
@@ -23,10 +24,11 @@ microphone = sr.Microphone()
 def ask_tars(messages):
     global response_text
     response = g4f.ChatCompletion.create(
-        model=g4f.models.gpt_35_turbo,
+        model=g4f.models.gpt_4o,
         messages=messages
     )
     response_text = response
+    print(f"Tars сказал: {response_text}")
     speak_response(response_text)  # Озвучиваем ответ Tars
 
 # Функция для озвучивания текста
@@ -56,13 +58,13 @@ def process_speech():
             user_input = recognizer.recognize_google(audio, language="ru-RU")
             print(f"Вы сказали: {user_input}")
 
-            if user_input.lower() == "пока":
+            if user_input in bye_words:
                 type_text(chat_history, "Tars: Пока!\n")
                 speak_response('Пока!')
                 chat_active = False
-            elif user_input.lower() == "давай поговорим":
-                type_text(chat_history, "Tars: Привет! Давай.\n")
-                speak_response('Привет! Давай.')
+            elif user_input in hi_words:
+                type_text(chat_history, "Tars: Да, Сэр!\n")
+                speak_response('Да, Сэр!')
                 chat_active = True
                 threading.Thread(target=ask_tars, args=(messages,)).start()
             elif chat_active:
