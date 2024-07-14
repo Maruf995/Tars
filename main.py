@@ -1,6 +1,6 @@
 import tkinter as tk
 import time
-import threading 
+import threading
 import g4f
 import speech_recognition as sr
 from gtts import gTTS
@@ -24,7 +24,7 @@ def ask_tars(messages):
         messages=messages
     )
     response_text = response
-    print(f"Tars сказал: {response_text}")
+    print(f"Tars: {response_text}")
     speak_response(response_text)  # Озвучиваем ответ Tars
 
 # Функция для озвучивания текста
@@ -37,6 +37,7 @@ def speak_response(text):
 def type_text(widget, text):
     for character in text:
         widget.insert(tk.END, character)
+        widget.see(tk.END)  # Прокручиваем текст до конца
         time.sleep(0.05)  # регулируйте скорость печати здесь
         widget.update_idletasks()
 
@@ -51,7 +52,7 @@ def process_speech():
             audio = recognizer.listen(source)
 
         try:
-            user_input = recognizer.recognize_google(audio, language="ru-RU")
+            user_input = recognizer.recognize_google(audio, language="ru-RU").lower()
             print(f"Вы сказали: {user_input}")
 
             if user_input in bye_words:
